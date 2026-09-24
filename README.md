@@ -1,0 +1,205 @@
+# Media Audio Extractor（媒体音频提取器）
+
+> TOS 7 Deb 单包应用 · WebUI 内嵌（iframe）· 版本 **1.0.0**
+
+| 项 | 值 |
+|---|---|
+| 应用 ID | `shh11-media-audio` |
+| 包类型 | Deb 单包（`application_type: "deb"`） |
+| 打开方式 | WebUI 内嵌（`type: "iframe"`，`path: "/shh11-media-audio/"`） |
+| 版本 | 1.0.0 |
+| 分类 | `Audio_Video_Entertainment`, `Utilities` |
+| 发布者 | shh |
+| 开发者仓库 | <https://github.com/RyanYang163/shh11-media-audio> |
+| 隐私政策（公网可访问） | <https://github.com/RyanYang163/shh11-media-audio/blob/main/PRIVACY.md> |
+
+## 简介
+
+把视频里的音轨无损抽取出来，支持批量处理。
+
+Pull the audio track out of video files without re-encoding, in batches.
+
+## 功能
+
+- MP4 / MOV / M4A（ISO-BMFF）轨道解析
+- MKV / WebM（EBML）轨道解析
+- 无损抽取音轨（流复制，不重编码）
+- 批量处理整个目录树
+- WAV / FLAC / MP3 / OGG 元数据与时长
+- 可选：本机有 ffmpeg 时启用转码预设
+
+全部功能由 **Python 标准库 + 原生 HTML/CSS/JS** 实现，**不含任何第三方代码、第三方
+图标字体或前端框架**，因此本仓库的许可证情况极为简单：全部为本项目自有代码，以 MIT 发布。
+
+## 可选增强引擎
+
+本应用的核心功能**不依赖**下列任何一项；它们只是「检测到就用」的增强。
+未安装时应用照常启动，只是对应能力在界面上标记为不可用。
+
+| 引擎 | 必需性 | 说明 |
+|---|---|---|
+| `ffmpeg` | 可选 | 检测到即启用；未检测到时相关功能显示为「不可用」，不影响其它功能 |
+
+> `.lang` 的 `descript` 字段**只描述离线可用的功能**，不承诺这里的能力，
+> 避免触发审核项「描述与实际功能不符」。
+
+## 权限声明
+
+| 权限 | 用途 | 说明 |
+|---|---|---|
+| 网络：无宿主端口 | — | iframe 应用经平台代理与后端通信，只监听 Unix socket，不占用任何宿主端口 |
+| 文件系统：`/Volume*/@apps/shh11-media-audio/data` | 运行期数据 | 由应用创建；是**唯一**的写入位置 |
+| 文件系统：用户选择加入白名单的目录 | 读取用户文件 | **默认只读**；白名单初始为空，必须由用户显式添加 |
+| 系统用户：`shh11-media-audio` 去连字符 | 隔离运行 | 由平台在安装时创建；**非 root** |
+| 共享文件夹 | 不使用 | 不需要额外共享文件夹 |
+| 容器 / 特权 | 不使用 | 本应用不是 Docker 应用，不使用任何特权能力 |
+
+资源上限（systemd 单元内声明）：`MemoryMax=1024M`、`CPUQuota=200%`、
+`LimitNOFILE=65536`、`LimitNPROC=256`。
+
+## 运行时写入路径清单（指引 12.9.6）
+
+| 路径（除特别注明外，均相对 `/Volume*/@apps/shh11-media-audio/data/`） | 用途 | 格式 | 创建时机 | 增长上限 / 轮转 | 生命周期 |
+|---|---|---|---|---|---|
+| `config/runtime.json` | 应用运行配置（含可访问目录白名单、权限级别等） | JSON | 首次启动创建，配置变更时重写 | < 64 KB | 持久，随升级保留 |
+| `db/app.db`（及同目录 `-wal` / `-shm`） | 任务队列与应用数据（SQLite） | SQLite | 首次启动建库；任务与扫描结果写入 | 已完成任务只保留最近 200 条，超出自动清理 | 持久，随升级保留；**升级绝不删库**（`PRAGMA user_version` 迁移） |
+| `cache/` | 可再生的缓存（扫描索引、图片哈希等） | 二进制 / JSON | 按需生成 | 上限 2 GB，超出按 LRU 清理 | 可再生，可安全删除 |
+| `tmp/` | 处理中的临时文件 | 二进制 | 任务开始时创建 | 任务结束即删；**每次启动清空全部残留** | 临时，自动清理 |
+| `logs/app.log`（及 `app.log.1` … `.5`） | 应用日志（标准格式，敏感信息已脱敏） | 文本 | 服务运行时持续写入 | 单文件 2 MB，轮转保留 5 个（约 12 MB 上限） | 持久，自动轮转 |
+| `output/` | 用户主动生成的结果文件 | 任意 | 用户提交导出 / 提取类任务时创建 | 由用户自行管理 | **属于用户数据，卸载不会删除** |
+| `/var/api/shh11-media-audio.sock`（绝对路径，非 data 下） | 平台代理 Unix socket，mode `0660` | Unix socket | 服务启动时创建 | 不适用 | 每次启动前先删除残留 |
+| `/var/lib/shh11-media-audio/`（绝对路径，systemd `StateDirectory`） | 兼容路径下的应用状态 | 目录 | systemd 创建 | 不适用 | systemd 管理 |
+| `/var/log/shh11-media-audio/`（绝对路径，systemd `LogsDirectory`） | 兼容路径下的日志 | 目录 | systemd 创建 | 不适用 | systemd 管理 |
+| `/run/shh11-media-audio/`（绝对路径，systemd `RuntimeDirectory`） | 运行时目录 | 目录 | systemd 创建 | 不适用 | 服务停止时由 systemd 删除 |
+
+**本应用不写入上表以外的任何路径**，尤其**不写共享的系统 `/tmp`**——临时文件一律
+走 `PrivateTmp` 提供的私有 `/tmp` 或上表中的 `data/tmp/`（指引 12.9.6）。
+
+## 隐私政策（审核项 C3 / C4 / C5）
+
+**公网地址（可直接访问）**：<https://github.com/RyanYang163/shh11-media-audio/blob/main/PRIVACY.md>
+
+包内另有 `PRIVACY.md` 全文，`config.ini` 的 `help` 字段指向同一地址——三条路径都可查。
+
+- **本地优先**：把视频里的音轨无损抽取出来，支持批量处理。所有处理都在你的 TNAS 上完成。
+- **不采集**：不收集任何使用统计、遥测、设备标识或个人信息。
+- **不上传**：不会把你的文件、内容或分析结果发送到任何服务器。
+
+## 构建
+
+```bash
+./build.sh            # 默认 x86_64
+./build.sh aarch64
+```
+
+产物在 `build/output/`：
+
+```
+shh11-media-audio_x86_64.deb
+shh11-media-audio_x86_64.deb.sha256
+```
+
+> 包文件名**不含版本号**——版本由 GitHub Release 的 tag 承载（指引 15.1 / 4.2.4）。
+> 构建器是 `tools/build_deb.py`，纯 Python 实现，不依赖 `dpkg-deb`，因此在
+> Windows 开发机上也能产出真 deb 并做结构自检：
+> `python3 tools/build_deb.py --inspect build/output/shh11-media-audio_x86_64.deb`
+
+## 本地运行（无需 TOS 设备）
+
+```bash
+python3 src/__main__.py --tcp 127.0.0.1:18011 --data-dir ./data
+# 浏览器打开 http://127.0.0.1:18011/
+```
+
+同一份业务代码，只是把 Unix socket 换成 TCP。跑测试：
+
+```bash
+python3 -m unittest discover -s tests -v
+```
+
+## 安装、升级与卸载验证
+
+```bash
+# 安装
+sudo dpkg -i shh11-media-audio_x86_64.deb
+sudo systemctl status shh11-media-audio
+sudo journalctl -u shh11-media-audio -f
+
+# socket 是否就绪（iframe 应用的关键一项）
+ls -l /var/api/shh11-media-audio.sock
+curl --unix-socket /var/api/shh11-media-audio.sock http://localhost/health
+
+# 启停
+sudo systemctl restart shh11-media-audio
+
+# 卸载（保留数据）
+sudo dpkg --remove shh11-media-audio
+# 彻底卸载（仍按设计保留数据盘上的运行数据）
+sudo dpkg --purge shh11-media-audio
+
+# 升级（数据必须保留）
+sudo dpkg -i shh11-media-audio_x86_64.deb
+```
+
+**卸载后残留说明**：`dpkg --purge` 会删除 `/usr/local/shh11-media-audio`、`/var/api/shh11-media-audio.sock`、
+`/var/lib/shh11-media-audio`、`/var/log/shh11-media-audio`、systemd 单元与专用用户。
+**数据盘上的 `/Volume*/@apps/shh11-media-audio/data/` 按设计保留**——其中 `output/` 是用户跑出来的
+结果文件，属于用户数据（指引 51 / 12.9.7 要求卸载默认保留用户数据）。需要彻底清理时手动执行：
+
+```bash
+sudo rm -rf /Volume*/@apps/shh11-media-audio
+```
+
+## 安全设计
+
+- **非 root 运行**：专用系统用户，`User=` / `Group=` 与 `config.ini` 的 `user` 字段一致。
+- **systemd 加固**：`NoNewPrivileges`、`ProtectSystem=strict`、`ProtectHome`、
+  `PrivateTmp`、`PrivateDevices`、`RestrictSUIDSGID`、`LockPersonality`、
+  `RemoveIPC`、`SystemCallArchitectures=native`，可写路径用 `ReadWritePaths` 显式枚举。
+- **无 shell 执行入口**：所有命令都是固定映射的具体能力，不存在
+  `POST /exec` 这类接受任意命令行的接口。
+- **路径白名单**：所有涉及用户文件的操作都先 `realpath` 再比对白名单根，
+  目录穿越与指向白名单之外的 symlink 一律拒绝。
+- **日志脱敏**：日志写入前对密码、Token、API Key、Cookie、`Bearer` 凭据做兜底打码。
+- **生命周期脚本无网络操作**：`preinst` / `postinst` 只做目录、属主与服务注册，
+  不含 `apt` / `pip` / `curl`。
+- **不写系统目录**：不在 `/etc`、`/usr`、`/boot` 下写任何运行期配置。
+
+## 许可证
+
+本项目自有代码以 **MIT** 发布，全文见 [`LICENSE`](./LICENSE)。
+不含任何第三方代码；第三方资源的署名与说明见 [`NOTICE`](./NOTICE) 与
+[`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md)。
+
+## 实测记录（TOS 7 真机，2026-09-23）
+
+**本应用已在 TerraMaster TOS 7 真机上完整验证过**「上传 → 解析 → 安装 → 启动 → 平台代理访问」全链路：
+
+| 环节 | 结果 |
+|---|---|
+| 平台解析 `config.ini` | id / name / version / application_type 全部正确读出 |
+| 安装 | `/v2/app/list` 中 `install=1` |
+| 启动 | `is_running=true`，`ExecStartPost` 等到了 socket 就绪 |
+| socket | `/var/api/<appid>.sock`，权限 `srw-rw----`，属主为应用用户 |
+| 平台代理 | `GET /v2/proxy/<appid>/health` → 200；`GET /v2/proxy/<appid>/api/app` → 200 |
+| 前端 | 页面正常渲染，并能经代理取到后端数据 |
+
+### 两点容易被误判的配置，都是实测结论
+
+**1）systemd 单元里刻意没有 `PrivateTmp=true`。**
+TOS 上 `/var/api` 与 `/var/log` 都是指向 `/tmp` 的软链（`/tmp` 是 tmpfs）。iframe 应用必须把
+Unix socket 建在 `/var/api/<appid>.sock`，而 `PrivateTmp=true` + `ReadWritePaths=/var/api`
+会让 systemd 建不出命名空间，服务直接 `226/NAMESPACE` 启动失败；即便命名空间建成，
+socket 也会落在**私有** `/tmp` 里，平台 nginx 在宿主上永远看不到它 —— iframe 应用会彻底不可用。
+（该项在指引 12.7 中属「Recommended」；其余加固项全部保留。）
+
+**2）单元里必须给 `AmbientCapabilities=CAP_DAC_OVERRIDE`。**
+`/var/api` 的权限是 `755 root:root`，非 root 的应用用户既不能在里建文件也不能 unlink
+（实测 `touch` 与 `socket.bind()` 都是 `Permission denied`）。没有这个能力时，服务会以
+`status=1/FAILURE` 反复重启、socket 永不出现。
+`CapabilityBoundingSet=CAP_DAC_OVERRIDE` 把能力集从内核默认的 **41 个收窄到 1 个**，
+是净减少；授予的那一个正是「在平台自有的 `/var/api` 里创建自家 socket」所必需的 ——
+即指引 12.7「drop all capabilities, add only required ones」的写法。
+
+> 附注：设备上另外几个第三方应用（含已通过审核的同批应用）正是因为第一条而以
+> `226/NAMESPACE` 处于 failed 状态。

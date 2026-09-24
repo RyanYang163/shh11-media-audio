@@ -1,0 +1,97 @@
+[zh-cn]
+name = "媒体音频提取器"
+auth = "shh"
+descript = "从 TNAS 上的媒体文件中提取音轨。应用内直接解析 MP4 / MOV / M4A（ISO-BMFF）与 MKV / WebM（EBML）容器，列出每条轨道编码、语言、声道数与比特率，然后无损写出选中的音轨——原始编码流直接复制，不重新编码，因此没有质量损失且速度快。输出到你自己指定的目录，批量模式可遍历整个目录树。同时支持读取 WAV / FLAC / MP3 / OGG 的元数据与时长。全部在本机离线完成。若系统上存在 ffmpeg，管理员可额外启用转码预设（MP3 128/192/320k、FLAC、WAV、M4A、OPUS）。"
+release_note = "1. 首次发布。"
+important = "默认提取为无损流复制，绝不会修改源文件。"
+
+[zh-hk]
+name = "媒體音訊提取器"
+auth = "shh"
+descript = "從 TNAS 上的媒體檔案中提取音軌。應用內直接解析 MP4 / MOV / M4A（ISO-BMFF）與 MKV / WebM（EBML）容器，列出每條軌道編碼、語言、聲道數與位元率，然後無損寫出選中的音軌——原始編碼流直接複製，不重新編碼，因此沒有品質損失且速度快。輸出到你自己指定的目錄，批次模式可遍歷整個目錄樹。同時支援讀取 WAV / FLAC / MP3 / OGG 的元資料與時長。全部在本機離線完成。若系統上存在 ffmpeg，管理員可額外啟用轉碼預設（MP3 128/192/320k、FLAC、WAV、M4A、OPUS）。"
+release_note = "1. 首次發佈。"
+important = "預設提取為無損流複製，絕不會修改來源檔案。"
+
+[en-us]
+name = "Media Audio Extractor"
+auth = "shh"
+descript = "Extracts audio tracks from media files on your TNAS. Parses MP4 / MOV / M4A and MKV / WebM containers inside the application, lists every track with codec, language, channels and bitrate, then writes the selected track out losslessly by copying the original encoded stream, so nothing is re-encoded. Batch mode walks a whole folder tree. Also reads metadata from WAV / FLAC / MP3 / OGG. Runs locally and offline; transcoding presets need ffmpeg."
+release_note = "1. Initial release."
+important = "Default extraction is a lossless stream copy. Source files are never modified."
+
+[fr-fr]
+name = "Media Audio Extractor"
+auth = "shh"
+descript = "Extracts audio tracks from media files on your TNAS. Parses MP4 / MOV / M4A and MKV / WebM containers inside the application, lists every track with codec, language, channels and bitrate, then writes the selected track out losslessly by copying the original encoded stream, so nothing is re-encoded. Batch mode walks a whole folder tree. Also reads metadata from WAV / FLAC / MP3 / OGG. Runs locally and offline; transcoding presets need ffmpeg."
+release_note = "1. Initial release."
+important = "Default extraction is a lossless stream copy. Source files are never modified."
+
+[de-de]
+name = "Media Audio Extractor"
+auth = "shh"
+descript = "Extracts audio tracks from media files on your TNAS. Parses MP4 / MOV / M4A and MKV / WebM containers inside the application, lists every track with codec, language, channels and bitrate, then writes the selected track out losslessly by copying the original encoded stream, so nothing is re-encoded. Batch mode walks a whole folder tree. Also reads metadata from WAV / FLAC / MP3 / OGG. Runs locally and offline; transcoding presets need ffmpeg."
+release_note = "1. Initial release."
+important = "Default extraction is a lossless stream copy. Source files are never modified."
+
+[it-it]
+name = "Media Audio Extractor"
+auth = "shh"
+descript = "Extracts audio tracks from media files on your TNAS. Parses MP4 / MOV / M4A and MKV / WebM containers inside the application, lists every track with codec, language, channels and bitrate, then writes the selected track out losslessly by copying the original encoded stream, so nothing is re-encoded. Batch mode walks a whole folder tree. Also reads metadata from WAV / FLAC / MP3 / OGG. Runs locally and offline; transcoding presets need ffmpeg."
+release_note = "1. Initial release."
+important = "Default extraction is a lossless stream copy. Source files are never modified."
+
+[es-es]
+name = "Media Audio Extractor"
+auth = "shh"
+descript = "Extracts audio tracks from media files on your TNAS. Parses MP4 / MOV / M4A and MKV / WebM containers inside the application, lists every track with codec, language, channels and bitrate, then writes the selected track out losslessly by copying the original encoded stream, so nothing is re-encoded. Batch mode walks a whole folder tree. Also reads metadata from WAV / FLAC / MP3 / OGG. Runs locally and offline; transcoding presets need ffmpeg."
+release_note = "1. Initial release."
+important = "Default extraction is a lossless stream copy. Source files are never modified."
+
+[hu-hu]
+name = "Media Audio Extractor"
+auth = "shh"
+descript = "Extracts audio tracks from media files on your TNAS. Parses MP4 / MOV / M4A and MKV / WebM containers inside the application, lists every track with codec, language, channels and bitrate, then writes the selected track out losslessly by copying the original encoded stream, so nothing is re-encoded. Batch mode walks a whole folder tree. Also reads metadata from WAV / FLAC / MP3 / OGG. Runs locally and offline; transcoding presets need ffmpeg."
+release_note = "1. Initial release."
+important = "Default extraction is a lossless stream copy. Source files are never modified."
+
+[ja-jp]
+name = "Media Audio Extractor"
+auth = "shh"
+descript = "Extracts audio tracks from media files on your TNAS. Parses MP4 / MOV / M4A and MKV / WebM containers inside the application, lists every track with codec, language, channels and bitrate, then writes the selected track out losslessly by copying the original encoded stream, so nothing is re-encoded. Batch mode walks a whole folder tree. Also reads metadata from WAV / FLAC / MP3 / OGG. Runs locally and offline; transcoding presets need ffmpeg."
+release_note = "1. Initial release."
+important = "Default extraction is a lossless stream copy. Source files are never modified."
+
+[ko-kr]
+name = "Media Audio Extractor"
+auth = "shh"
+descript = "Extracts audio tracks from media files on your TNAS. Parses MP4 / MOV / M4A and MKV / WebM containers inside the application, lists every track with codec, language, channels and bitrate, then writes the selected track out losslessly by copying the original encoded stream, so nothing is re-encoded. Batch mode walks a whole folder tree. Also reads metadata from WAV / FLAC / MP3 / OGG. Runs locally and offline; transcoding presets need ffmpeg."
+release_note = "1. Initial release."
+important = "Default extraction is a lossless stream copy. Source files are never modified."
+
+[pl-pl]
+name = "Media Audio Extractor"
+auth = "shh"
+descript = "Extracts audio tracks from media files on your TNAS. Parses MP4 / MOV / M4A and MKV / WebM containers inside the application, lists every track with codec, language, channels and bitrate, then writes the selected track out losslessly by copying the original encoded stream, so nothing is re-encoded. Batch mode walks a whole folder tree. Also reads metadata from WAV / FLAC / MP3 / OGG. Runs locally and offline; transcoding presets need ffmpeg."
+release_note = "1. Initial release."
+important = "Default extraction is a lossless stream copy. Source files are never modified."
+
+[ru-ru]
+name = "Media Audio Extractor"
+auth = "shh"
+descript = "Extracts audio tracks from media files on your TNAS. Parses MP4 / MOV / M4A and MKV / WebM containers inside the application, lists every track with codec, language, channels and bitrate, then writes the selected track out losslessly by copying the original encoded stream, so nothing is re-encoded. Batch mode walks a whole folder tree. Also reads metadata from WAV / FLAC / MP3 / OGG. Runs locally and offline; transcoding presets need ffmpeg."
+release_note = "1. Initial release."
+important = "Default extraction is a lossless stream copy. Source files are never modified."
+
+[tr-tr]
+name = "Media Audio Extractor"
+auth = "shh"
+descript = "Extracts audio tracks from media files on your TNAS. Parses MP4 / MOV / M4A and MKV / WebM containers inside the application, lists every track with codec, language, channels and bitrate, then writes the selected track out losslessly by copying the original encoded stream, so nothing is re-encoded. Batch mode walks a whole folder tree. Also reads metadata from WAV / FLAC / MP3 / OGG. Runs locally and offline; transcoding presets need ffmpeg."
+release_note = "1. Initial release."
+important = "Default extraction is a lossless stream copy. Source files are never modified."
+
+[pt-pt]
+name = "Media Audio Extractor"
+auth = "shh"
+descript = "Extracts audio tracks from media files on your TNAS. Parses MP4 / MOV / M4A and MKV / WebM containers inside the application, lists every track with codec, language, channels and bitrate, then writes the selected track out losslessly by copying the original encoded stream, so nothing is re-encoded. Batch mode walks a whole folder tree. Also reads metadata from WAV / FLAC / MP3 / OGG. Runs locally and offline; transcoding presets need ffmpeg."
+release_note = "1. Initial release."
+important = "Default extraction is a lossless stream copy. Source files are never modified."

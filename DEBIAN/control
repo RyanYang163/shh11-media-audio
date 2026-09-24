@@ -1,0 +1,9 @@
+Package: shh11-media-audio
+Version: 1.0.0
+Architecture: amd64
+Section: utils
+Priority: optional
+Maintainer: shh <surpasshither@outlook.com>
+Depends: python3 (>= 3.10), systemd
+Description: Media Audio Extractor
+ Pull the audio track out of video files without re-encoding, in batches.
