@@ -1,13 +1,13 @@
 # Media Audio Extractor（媒体音频提取器）
 
-> TOS 7 Deb 单包应用 · WebUI 内嵌（iframe）· 版本 **1.0.0**
+> TOS 7 Deb 单包应用 · WebUI 内嵌（iframe）· 版本 **1.0.1**
 
 | 项 | 值 |
 |---|---|
 | 应用 ID | `shh11-media-audio` |
 | 包类型 | Deb 单包（`application_type: "deb"`） |
 | 打开方式 | WebUI 内嵌（`type: "iframe"`，`path: "/shh11-media-audio/"`） |
-| 版本 | 1.0.0 |
+| 版本 | 1.0.1 |
 | 分类 | `Audio_Video_Entertainment`, `Utilities` |
 | 发布者 | shh |
 | 开发者仓库 | <https://github.com/RyanYang163/shh11-media-audio> |

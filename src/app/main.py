@@ -23,7 +23,7 @@ from tnasapp import fsapi, logx, server as srv
 from . import audiometa, container, ffmpeg
 
 APP_ID = "shh11-media-audio"
-APP_VERSION = "1.0.0"
+APP_VERSION = "1.0.1"
 TITLE = "Media Audio Extractor"
 
 #: 扫描时递归的最大深度，防止误选根目录后无限下钻
