@@ -2,8 +2,8 @@
   "spdxVersion": "SPDX-2.3",
   "dataLicense": "CC0-1.0",
   "SPDXID": "SPDXRef-DOCUMENT",
-  "name": "shh11-media-audio-1.0.1",
-  "documentNamespace": "https://github.com/RyanYang163/shh11-media-audio/sbom/1.0.1",
+  "name": "shh11-media-audio-1.0.025",
+  "documentNamespace": "https://github.com/RyanYang163/shh11-media-audio/sbom/1.0.025",
   "creationInfo": {
     "created": "2026-09-23T00:00:00Z",
     "creators": [
@@ -15,7 +15,7 @@
     {
       "name": "shh11-media-audio",
       "SPDXID": "SPDXRef-Package-shh11-media-audio",
-      "versionInfo": "1.0.1",
+      "versionInfo": "1.0.025",
       "downloadLocation": "https://github.com/RyanYang163/shh11-media-audio",
       "filesAnalyzed": true,
       "licenseConcluded": "MIT",
@@ -26,7 +26,7 @@
         {
           "referenceCategory": "PACKAGE-MANAGER",
           "referenceType": "purl",
-          "referenceLocator": "pkg:github/RyanYang163/shh11-media-audio@1.0.1"
+          "referenceLocator": "pkg:github/RyanYang163/shh11-media-audio@1.0.025"
         }
       ]
     }
